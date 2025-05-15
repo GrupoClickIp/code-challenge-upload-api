@@ -1,7 +1,11 @@
-### Modelagem
+### Modelagem (MER)
 
-!(.assets/task-api-mer.png)
-### endpoints
+![[assets/shortener-api-mer.png]]
+
+### Objetivo
+- O usuário deve criar uma nova conta e em seguida realizar o login. Após o usuário está logado, ele poderá encurtar uma URL.
+
+### endpoints:
 
 #### POST /signup -> Criar conta
 
@@ -19,25 +23,41 @@ Fields: name, email and password.
 - Gerar o token para o usuário logado
 - Quando usuário logar retornar na rota: name, email, token
 
-#### POST /tasks → Create new task
+#### POST /shorten - Rota que irá gerar uma nova URL
 
-Fields: name, description.
+- Gerar a nova URL encurtar e salvar no banco
+- Retornar a nova URL
 
-- A description da task é opcional. 
-- Uma nova task deve começar no status: "NOT_STARTED"
-- Ao criar uma nova task a rota deve retornar: task name, description, status, author, author_id
+```js
+'http://localhost:3333/abc1234' // new url
+'http://localhost:3333/' // baseURL
+'abc1234' // code generated
+```
 
-#### GET /tasks → List my tasks
+#### POST /:code - Rota que irá gerar uma nova URL
 
-- Verificar se o usuário já tem tasks, se não retornar status code 200 informando que o usuário não criou nenhuma task.
-- Retornar as tasks do usuário
+- Verificar se o código informado já existe, se não retornar um erro 400
+- Cada acesso pela rota deverá ser contabilizado e salvo no banco
+- A rota deve fazer o redirect para URL original
 
-#### Regra de negócio:
-- Uma task deve conter identificador único, nome, descrição, status e qual usuário pertence.
-- Somente o usuário autenticado pode listar as suas atividades
-- Qualquer usuário pode criar uma conta
-- As todas: /tasks (get and post), são privadas. Somente o usuário logada pode acessá-las.
+Ex: 
+```js
+'http://localhost:3333/abc1234' // new url
+'https://meuecommerce.com.br/download/app' // original url
+```
 
+#### GET /links
+
+- Retornar os links gerados pelo usuário que está logado
+- O retorno deve conter: name, email, os links gerados e a quantidade que cada link teve.
+
+#### Regras de negócio:
+- Para gerar uma URL abreviado é necessário informar a URL original para onde será feito o redirecionamento.
+- Para criar uma nova URL abreviada é necessário ter uma conta criada.
+- A cada novo acesso a nova URL deverá ser contabilizado.
+- Somente o usuário logado pode gerar URL
+- a url deve ser salva no seguinte formato: `https://meusite.com.br`
+- As rotas: /shorten, /:code, são privadas. Então somente o usuário logado pode acessar elas.### 
 
 ### How to run the project:
 
