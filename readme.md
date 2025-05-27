@@ -34,7 +34,7 @@ Fields: name, email and password.
 'abc1234' // code generated
 ```
 
-#### POST /:code - Rota que irá redirecionar para URL original
+#### GET /:code - Rota que irá redirecionar para URL original
 
 - Verificar se o código informado já existe, se não retornar um erro 400
 - Cada acesso pela rota deverá ser contabilizado e salvo no banco
